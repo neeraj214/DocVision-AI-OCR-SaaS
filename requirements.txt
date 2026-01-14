@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+numpy
+opencv-python
+easyocr
+pytesseract
+Pillow
+langdetect
+reportlab
+pydantic
+SQLAlchemy
+aiofiles
+requests
