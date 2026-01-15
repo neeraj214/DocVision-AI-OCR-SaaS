@@ -12,3 +12,5 @@ pydantic
 SQLAlchemy
 aiofiles
 requests
+ruff
+mypy

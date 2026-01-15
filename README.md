@@ -5,6 +5,8 @@
 <p align="center">
   <a href="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/stargazers"><img src="https://img.shields.io/github/stars/neeraj214/DocVision-AI-OCR-SaaS?style=social" alt="Stars"></a>
   <a href="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/fork"><img src="https://img.shields.io/github/forks/neeraj214/DocVision-AI-OCR-SaaS?style=social" alt="Forks"></a>
+  <a href="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/actions"><img src="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/FastAPI-0.x-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
@@ -113,6 +115,14 @@ DocVision-AI-OCR-SaaS/
 └─ docs/
    └─ (add design notes as needed)
 ```
+
+## Screenshots & Demo
+- UI Screenshot
+  - ![Upload and Results](https://raw.githubusercontent.com/neeraj214/DocVision-AI-OCR-SaaS/main/docs/assets/ui-screenshot-1.png)
+- Processing GIF
+  - ![Processing Demo](https://raw.githubusercontent.com/neeraj214/DocVision-AI-OCR-SaaS/main/docs/assets/processing-demo.gif)
+- Demo Video
+  - https://youtu.be/xxxxxxxxxxx
 
 ## Installation & Setup
 - ⚙️ Backend
