@@ -18,6 +18,7 @@ coverage/
 .vscode/
 backend/output/
 backend/tmp/
+backend/upload_tmp/
 frontend/.vite/
 frontend/.next/
 frontend/build/
