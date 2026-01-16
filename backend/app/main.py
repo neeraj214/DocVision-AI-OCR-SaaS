@@ -17,6 +17,7 @@ app.add_middleware(
 
 os.makedirs(settings.output_dir, exist_ok=True)
 os.makedirs(settings.tmp_dir, exist_ok=True)
+os.makedirs(settings.upload_tmp_dir, exist_ok=True)
 
 app.mount("/outputs", StaticFiles(directory=settings.output_dir), name="outputs")
 
