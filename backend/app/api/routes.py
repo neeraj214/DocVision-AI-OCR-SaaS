@@ -5,6 +5,7 @@ from ..services.ocr_pipeline import process_image
 from ..schemas.ocr import OCRResponse, OCRV1Response
 from ..services.ocr_service import run_ocr
 from ..core.config import settings
+import time
 
 router = APIRouter()
 
@@ -19,8 +20,15 @@ async def ocr(file: UploadFile = File(...), lang: str | None = None):
     if file.content_type not in {"image/png", "image/jpeg", "image/jpg"}:
         raise HTTPException(status_code=400, detail="Unsupported file type")
     path = await save_upload_file(file, settings.tmp_dir)
+    start = time.perf_counter()
     result = process_image(path, lang or settings.default_lang)
-    return JSONResponse(content=result)
+    elapsed_ms = int((time.perf_counter() - start) * 1000)
+    payload = {
+        **result,
+        "status": "success",
+        "metadata": {"processing_time_ms": elapsed_ms},
+    }
+    return JSONResponse(content=payload)
 
 
 @router.post("/v1/ocr", response_model=OCRV1Response)
@@ -38,4 +46,3 @@ async def ocr_v1(file: UploadFile = File(...)):
         return JSONResponse(content=result)
     except Exception:
         return JSONResponse(status_code=500, content={"status": "error", "error": {"code": "ocr_failed", "message": "OCR processing failed"}})
-

@@ -2,6 +2,18 @@
   <img src="https://capsule-render.vercel.app/api?type=rounded&color=gradient&text=DocVision%20AI&fontSize=48&fontAlign=50&fontAlignY=40&height=140&desc=Intelligent%20OCR%20SaaS%20Platform&descAlign=50&descAlignY=75" alt="DocVision AI Banner">
 </p>
 
+## Run with Docker
+- Recommended for consistent environment
+- Requirements: Docker and Docker Compose
+- Steps:
+  - Copy `.env.example` to `.env` and adjust values
+  - Build and start:
+    - `docker-compose up --build -d`
+  - Health check:
+    - `curl http://localhost:8000/api/health`
+- The backend runs on `http://localhost:8000`
+- Outputs are persisted to `./outputs` on the host
+
 <p align="center">
   <a href="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/stargazers"><img src="https://img.shields.io/github/stars/neeraj214/DocVision-AI-OCR-SaaS?style=social" alt="Stars"></a>
   <a href="https://github.com/neeraj214/DocVision-AI-OCR-SaaS/fork"><img src="https://img.shields.io/github/forks/neeraj214/DocVision-AI-OCR-SaaS?style=social" alt="Forks"></a>

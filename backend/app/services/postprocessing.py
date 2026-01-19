@@ -9,17 +9,16 @@ def clean_text(text: str) -> str:
 
 
 def to_structured(text: str):
-    lines = [l.strip() for l in text.split("\n")]
+    lines = [line.strip() for line in text.split("\n")]
     paragraphs = []
-    current = []
-    for l in lines:
-        if l == "":
+    current: list[str] = []
+    for line in lines:
+        if line == "":
             if current:
                 paragraphs.append({"lines": current})
                 current = []
         else:
-            current.append(l)
+            current.append(line)
     if current:
         paragraphs.append({"lines": current})
     return {"paragraphs": paragraphs}
-

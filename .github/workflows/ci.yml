@@ -22,6 +22,8 @@ jobs:
         run: mypy backend
       - name: Import check
         run: python -c "import fastapi; import cv2; import easyocr"
+      - name: Run backend tests
+        run: pytest -q
   frontend:
     runs-on: ubuntu-latest
     steps:

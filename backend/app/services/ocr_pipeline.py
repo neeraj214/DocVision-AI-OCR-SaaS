@@ -13,7 +13,10 @@ from ..core.config import settings
 
 
 def _read_image(path: str) -> np.ndarray:
-    return cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
+    img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
+    if isinstance(img, np.ndarray):
+        return img
+    return np.zeros((1, 1, 3), dtype=np.uint8)
 
 
 def _easyocr_text(img: np.ndarray, lang: str):
@@ -59,4 +62,3 @@ def process_image(path: str, lang_hint: str):
         "language": language,
         "pdf_url": pdf_url,
     }
-
