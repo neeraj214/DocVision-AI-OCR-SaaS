@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+    image: docvision-backend:latest
+    env_file:
+      - .env
+    environment:
+      default_lang: ${OCR_DEFAULT_LANG:-en}
+      output_dir: ${OUTPUT_DIR:-/app/outputs}
+      DEBUG: ${DEBUG:-false}
+    volumes:
+      - ./outputs:/app/outputs
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
