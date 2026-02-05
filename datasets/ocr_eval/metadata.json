@@ -1,0 +1,9 @@
+{
+  "description": "OCR Evaluation Dataset",
+  "version": "1.0",
+  "created_at": "2026-02-05",
+  "statistics": {
+    "total_images": 3,
+    "languages": ["en"]
+  }
+}
