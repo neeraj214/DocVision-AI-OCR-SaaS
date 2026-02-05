@@ -39,7 +39,7 @@ export const UploadPage: React.FC = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8000/ocr/process", {
+      const response = await fetch("http://localhost:8000/api/ocr", {
         method: "POST",
         body: formData,
       });
