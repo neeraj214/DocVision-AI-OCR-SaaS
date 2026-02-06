@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=rounded&color=gradient&text=DocVision%20AI&fontSize=48&fontAlign=50&fontAlignY=40&height=140&desc=Intelligent%20OCR%20SaaS%20Platform&descAlign=50&descAlignY=75" alt="DocVision AI Banner">
-</p>
+# DocVision AI - Intelligent OCR SaaS Platform
 
 ## Run with Docker
 - Recommended for consistent environment
@@ -88,7 +86,43 @@
 - Export: reportlab (searchable PDF)
 - Storage: Disk outputs; optional SQLite expansion
 
-## ML Evaluation System
+## 🧠 Phase 2A: Document Classification
+
+The system now includes a CNN-based document classifier (ResNet18) to categorize documents into 4 types:
+- Invoice
+- Receipt
+- Form
+- Note
+
+### 📁 Dataset Structure
+Place training images in `datasets/doc_classification/train/{class_name}`.
+Place validation images in `datasets/doc_classification/val/{class_name}`.
+
+### 🚀 Training
+To train the classifier:
+```bash
+python backend/app/ml/train_classifier.py --epochs 10
+```
+This will save `best_model.pth` and `classes.json` to `backend/app/ml/artifacts`.
+
+### 📊 Evaluation
+To evaluate the model:
+```bash
+python backend/app/ml/evaluate_classifier.py --model_path backend/app/ml/artifacts/best_model.pth
+```
+
+### 🔮 Inference API
+Endpoint: `POST /api/ml/classify`
+Input: Image file
+Output:
+```json
+{
+  "document_type": "invoice",
+  "confidence": 0.98
+}
+```
+
+## ML Evaluation System (OCR)
 The project includes a comprehensive evaluation pipeline to measure OCR accuracy.
 
 ### Metrics
@@ -115,12 +149,12 @@ DocVision-AI-OCR-SaaS/
 ├─ requirements.txt
 ├─ .gitignore
 ├─ datasets/
-│  └─ ocr_eval/
-│     ├─ images/
-│     └─ labels/
+│  ├─ ocr_eval/
+│  └─ doc_classification/
 ├─ scripts/
 │  ├─ evaluate_ocr.py
-│  └─ create_sample_dataset.py
+│  ├─ create_sample_dataset.py
+│  └─ validate_classification_dataset.py
 ├─ backend/
 │  └─ app/
 │     ├─ main.py
@@ -128,6 +162,12 @@ DocVision-AI-OCR-SaaS/
 │     ├─ api/
 │     │  └─ routes.py
 │     ├─ ml/
+│     │  ├─ models/
+│     │  │  └─ cnn_classifier.py
+│     │  ├─ train_classifier.py
+│     │  ├─ evaluate_classifier.py
+│     │  ├─ inference_classifier.py
+│     │  ├─ utils.py
 │     │  ├─ metrics.py
 │     │  ├─ dataset_loader.py
 │     │  └─ evaluate.py
