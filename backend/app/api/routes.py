@@ -5,6 +5,7 @@ from ..services.ocr_pipeline import process_image
 from ..schemas.ocr import OCRResponse, OCRV1Response
 from ..services.ocr_service import run_ocr
 from ..ml.evaluate import evaluate_dataset
+from ..ml.inference_classifier import get_classifier
 from ..core.config import settings
 import time
 import os
@@ -67,3 +68,34 @@ def evaluate_model():
     results = evaluate_dataset(dataset_path)
     return JSONResponse(content=results)
 
+@router.post("/ml/classify")
+async def classify_document(file: UploadFile = File(...)):
+    """
+    Classify document type using CNN model.
+    """
+    if file.content_type not in {"image/png", "image/jpeg", "image/jpg"}:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+        
+    # Save file temporarily
+    path = await save_upload_file(file, settings.tmp_dir)
+    
+    try:
+        classifier = get_classifier()
+        if classifier is None:
+            return JSONResponse(
+                status_code=503, 
+                content={"error": "Model not loaded. Please train the model first."}
+            )
+            
+        result = classifier.predict(path)
+        return JSONResponse(content=result)
+        
+    except Exception as e:
+        return JSONResponse(
+            status_code=500, 
+            content={"error": str(e)}
+        )
+    finally:
+        # Cleanup
+        if os.path.exists(path):
+            os.remove(path)
