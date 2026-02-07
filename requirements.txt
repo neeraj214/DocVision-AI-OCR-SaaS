@@ -20,3 +20,7 @@ pytest
 tabulate
 langdetect
 reportlab
+jiwer
+transformers
+scikit-learn
+datasets
