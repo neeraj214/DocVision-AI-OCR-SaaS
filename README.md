@@ -122,6 +122,42 @@ Output:
 }
 ```
 
+## 🦾 Phase 2B: Transformer OCR (TrOCR)
+
+We have integrated Microsoft's TrOCR (Transformer-based Optical Character Recognition) to compare against traditional OCR engines.
+
+### 🧠 Model Architecture
+- **TrOCR**: Vision Encoder-Decoder model.
+- **Encoder**: ViT (Vision Transformer) or ResNet backbone.
+- **Decoder**: RoBERTa or similar language model for text generation.
+- **Advantage**: Holistic understanding of image context, better at handwritten text and complex layouts compared to pure CNN/RNN + CTC approaches.
+
+### 📁 Dataset Structure
+Place training data in `datasets/ocr_train/`:
+- `images/`: Directory containing image files.
+- `labels.csv`: CSV file with `filename` and `text` columns.
+
+### 🚀 Training
+To fine-tune TrOCR:
+```bash
+python scripts/run_trocr_experiment.py train --data_dir datasets/ocr_train --epochs 5
+```
+
+### 📊 Evaluation & Comparison
+To compare TrOCR, EasyOCR, and Tesseract on the evaluation set:
+```bash
+python scripts/run_trocr_experiment.py evaluate --model_path backend/app/ml/transformer/artifacts --eval_dir datasets/ocr_eval
+```
+
+### 🔮 Inference
+To use TrOCR programmatically:
+```python
+from backend.app.ml.transformer.inference_trocr import get_trocr_model
+model = get_trocr_model("backend/app/ml/transformer/artifacts")
+result = model.predict("path/to/image.jpg")
+print(result) # {'text': '...', 'cer': None, 'wer': None}
+```
+
 ## ML Evaluation System (OCR)
 The project includes a comprehensive evaluation pipeline to measure OCR accuracy.
 
