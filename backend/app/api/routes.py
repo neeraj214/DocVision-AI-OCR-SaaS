@@ -91,11 +91,42 @@ async def classify_document(file: UploadFile = File(...)):
         return JSONResponse(content=result)
         
     except Exception as e:
+                return JSONResponse(
+                    status_code=500, 
+                    content={"error": str(e)}
+                )
+            finally:
+                # Cleanup
+                if os.path.exists(path):
+                    os.remove(path)
+
+@router.post("/ocr/routed")
+async def routed_ocr(file: UploadFile = File(...)):
+    """
+    Intelligent Routed OCR Endpoint.
+    Classifies the document and routes to the best OCR engine (TrOCR or EasyOCR).
+    """
+    if file.content_type not in {"image/png", "image/jpeg", "image/jpg"}:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+        
+    path = await save_upload_file(file, settings.tmp_dir)
+    
+    try:
+        from backend.app.ml.unified_ocr import UnifiedOCR
+        # Note: In production, UnifiedOCR should be a singleton dependency
+        unified_ocr = UnifiedOCR()
+        
+        result = unified_ocr.process(path)
+        
+        # Add pdf_url placeholder if we were to generate one, 
+        # but for now just return the raw routed result
+        return JSONResponse(content=result)
+        
+    except Exception as e:
         return JSONResponse(
             status_code=500, 
             content={"error": str(e)}
         )
     finally:
-        # Cleanup
         if os.path.exists(path):
             os.remove(path)
