@@ -92,6 +92,22 @@ def evaluate_routed_system(eval_dir: str, output_file: str = "routed_evaluation_
     print(f"Average WER: {avg_wer:.4f}")
     print("Engine Usage:", engine_stats)
     
+    # Log Experiment
+    try:
+        from backend.app.ml.experiments.experiment_logger import ExperimentLogger
+        logger = ExperimentLogger()
+        logger.log_experiment(
+            model_name="routed_ocr_system",
+            model_version="v1.0",
+            dataset_version="ocr_eval_v1",
+            task="routed_evaluation",
+            hyperparameters={"engine_usage": engine_stats},
+            metrics={"cer": avg_cer, "wer": avg_wer},
+            output_artifacts=output_file
+        )
+    except Exception as e:
+        print(f"Warning: Failed to log experiment: {e}")
+        
     with open(output_file, 'w') as f:
         json.dump({"summary": summary, "details": results}, f, indent=2)
         
