@@ -111,6 +111,26 @@ def train_model(
     # Save classes
     with open(os.path.join(output_dir, "classes.json"), "w") as f:
         json.dump(classes, f)
+
+    # Log Experiment
+    try:
+        from backend.app.ml.experiments.experiment_logger import ExperimentLogger
+        logger = ExperimentLogger()
+        logger.log_experiment(
+            model_name="resnet18_classifier",
+            model_version="v1.0",
+            dataset_version="doc_classification_v1",
+            task="document_classification",
+            hyperparameters={
+                "epochs": epochs,
+                "batch_size": batch_size,
+                "learning_rate": lr
+            },
+            metrics={"final_loss": history["train_loss"][-1]},
+            output_artifacts=output_dir
+        )
+    except Exception as e:
+        print(f"Warning: Failed to log experiment: {e}")
         
     print(f"\nTraining complete. Best Accuracy: {best_acc:.4f}")
 
