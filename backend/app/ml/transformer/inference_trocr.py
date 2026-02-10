@@ -18,14 +18,21 @@ class TrOCRInference:
             self.model.to(self.device)
             self.model.eval()
             print("TrOCR model loaded successfully.")
+            self.loaded = True
         except Exception as e:
             print(f"Error loading TrOCR model: {e}")
-            raise e
+            self.loaded = False
+            self.load_error = str(e)
+            # Do not raise exception, allow fallback
+            # raise e
 
     def predict(self, image_path: str, ground_truth: str = None) -> dict:
         """
         Run inference on a single image.
         """
+        if not hasattr(self, 'loaded') or not self.loaded:
+            return {"error": f"TrOCR model not loaded: {getattr(self, 'load_error', 'Unknown error')}"}
+
         if not os.path.exists(image_path):
             raise FileNotFoundError(f"Image not found at {image_path}")
 
