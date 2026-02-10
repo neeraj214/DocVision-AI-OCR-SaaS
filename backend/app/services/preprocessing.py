@@ -9,33 +9,21 @@ def to_grayscale(img: np.ndarray) -> np.ndarray:
 
 
 def denoise(img: np.ndarray) -> np.ndarray:
-    return cv2.GaussianBlur(img, (5, 5), 0)
-
-
-def threshold(img: np.ndarray) -> np.ndarray:
-    _, th = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    return th
-
-
-def deskew(img: np.ndarray) -> np.ndarray:
-    coords = np.column_stack(np.where(img > 0))
-    if coords.size == 0:
-        return img
-    rect = cv2.minAreaRect(coords.astype(np.float32))
-    angle = rect[-1]
-    if angle < -45:
-        angle = -(90 + angle)
-    else:
-        angle = -angle
-    (h, w) = img.shape[:2]
-    M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
-    return cv2.warpAffine(img, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+    # Use very mild denoising to preserve text edges
+    return cv2.GaussianBlur(img, (3, 3), 0)
 
 
 def preprocess(img: np.ndarray) -> np.ndarray:
+    """
+    Minimal preprocessing pipeline.
+    Avoids aggressive thresholding which destroys document structure.
+    """
+    # 1. Grayscale
     g = to_grayscale(img)
-    d = denoise(g)
-    t = threshold(d)
-    s = deskew(t)
-    return s
-
+    
+    # 2. Mild Denoise (Optional, can be skipped for high-quality scans)
+    # d = denoise(g) 
+    
+    # Return grayscale image directly. 
+    # EasyOCR/Tesseract handle binarization internally and better than global Otsu.
+    return g
