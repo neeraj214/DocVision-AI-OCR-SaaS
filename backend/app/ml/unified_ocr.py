@@ -40,6 +40,10 @@ class UnifiedOCR:
             if engine == "trocr":
                 # TrOCR Execution
                 trocr_res = self.trocr.predict(image_path)
+                
+                if "error" in trocr_res:
+                    raise Exception(trocr_res["error"])
+                    
                 result["text"] = trocr_res.get("text", "")
                 result["raw_output"] = trocr_res
                 
