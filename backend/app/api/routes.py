@@ -91,14 +91,14 @@ async def classify_document(file: UploadFile = File(...)):
         return JSONResponse(content=result)
         
     except Exception as e:
-                return JSONResponse(
-                    status_code=500, 
-                    content={"error": str(e)}
-                )
-            finally:
-                # Cleanup
-                if os.path.exists(path):
-                    os.remove(path)
+        return JSONResponse(
+            status_code=500, 
+            content={"error": str(e)}
+        )
+    finally:
+        # Cleanup
+        if os.path.exists(path):
+            os.remove(path)
 
 @router.post("/ocr/routed")
 async def routed_ocr(file: UploadFile = File(...)):
