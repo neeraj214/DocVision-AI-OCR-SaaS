@@ -27,3 +27,11 @@ class OCRV1Response(BaseModel):
     blocks: List[OCRBlock]
     metadata: OCRMetadata
 
+
+class RoutedOCRResponse(BaseModel):
+    text: str
+    structured: Any
+    routing_info: Any
+    raw_output: Any = None
+    error: str = None
+
