@@ -1,9 +1,11 @@
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import os
 
 from backend.app.ml.routing.ocr_router import OCRRouter
 from backend.app.ml.transformer.inference_trocr import get_trocr_model
 from backend.app.services.ocr_pipeline import OCRPipeline
+from backend.app.ml.postprocessing.field_extractor import FieldExtractor
+from backend.app.ml.postprocessing.validators import FieldValidator
 
 class UnifiedOCR:
     """
@@ -12,13 +14,16 @@ class UnifiedOCR:
     1. Route (Classify)
     2. Select Engine
     3. Execute OCR
-    4. Return standardized result
+    4. Post-process (Extract & Validate)
+    5. Return standardized result
     """
     
     def __init__(self):
         self.router = OCRRouter()
         self.trocr = get_trocr_model()
         self.easyocr_pipeline = OCRPipeline() # This wraps EasyOCR/Tesseract
+        self.extractor = FieldExtractor()
+        self.validator = FieldValidator()
         
     def process(self, image_path: str) -> Dict[str, Any]:
         """
@@ -31,7 +36,12 @@ class UnifiedOCR:
         result = {
             "routing_info": route_info,
             "text": "",
+            "raw_text": "",
             "structured": {},
+            "structured_fields": {},
+            "validation_status": "none",
+            "validation_errors": [],
+            "corrections_applied": [],
             "raw_output": None
         }
         
@@ -71,4 +81,20 @@ class UnifiedOCR:
                 except Exception as fb_e:
                     result["fatal_error"] = str(fb_e)
                     
+        # 3. Post-Process (Extract & Validate)
+        if result["text"]:
+            result["raw_text"] = result["text"]
+            
+            # Extract
+            extracted = self.extractor.extract(result["text"])
+            result["structured_fields"] = extracted
+            result["text"] = extracted.pop("normalized_text", result["text"])
+            result["corrections_applied"].extend(extracted.pop("corrections", []))
+            
+            # Validate
+            status, errors, corrections = self.validator.validate(result["structured_fields"])
+            result["validation_status"] = status
+            result["validation_errors"] = errors
+            result["corrections_applied"].extend(corrections)
+            
         return result
