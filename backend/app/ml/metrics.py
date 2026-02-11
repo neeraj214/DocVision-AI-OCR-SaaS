@@ -1,5 +1,43 @@
 import numpy as np
-from typing import List
+import math
+from typing import List, Any, Dict
+
+def compute_field_accuracy(ground_truth: Any, predicted: Any) -> float:
+    """
+    Computes accuracy for a single field. 
+    For strings, it uses 1 - CER (clamped at 0).
+    For numbers, it uses an exact match (or close match for floats).
+    """
+    if ground_truth is None and predicted is None:
+        return 1.0
+    if ground_truth is None or predicted is None:
+        return 0.0
+    
+    if isinstance(ground_truth, str) and isinstance(predicted, str):
+        cer = compute_cer(ground_truth, predicted)
+        return max(0.0, 1.0 - cer)
+    
+    if isinstance(ground_truth, (int, float)) and isinstance(predicted, (int, float)):
+        if math.isclose(ground_truth, predicted, rel_tol=1e-5):
+            return 1.0
+        return 0.0
+        
+    return 1.0 if ground_truth == predicted else 0.0
+
+def compute_structured_accuracy(gt_dict: Dict[str, Any], pred_dict: Dict[str, Any]) -> Dict[str, float]:
+    """
+    Computes accuracy across multiple fields.
+    """
+    metrics = {}
+    all_scores = []
+    
+    for field in gt_dict.keys():
+        score = compute_field_accuracy(gt_dict.get(field), pred_dict.get(field))
+        metrics[f"{field}_accuracy"] = score
+        all_scores.append(score)
+        
+    metrics["overall_structured_accuracy"] = np.mean(all_scores) if all_scores else 0.0
+    return metrics
 
 def levenshtein_distance(s1: List[str] | str, s2: List[str] | str) -> int:
     """
