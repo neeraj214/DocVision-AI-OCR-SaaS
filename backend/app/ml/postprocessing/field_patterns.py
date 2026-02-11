@@ -1,10 +1,15 @@
 import re
 
-# Invoice ID: Support common prefixes and OCR errors (INVI -> INV/)
+# Strict Validation Patterns
+STRICT_INVOICE_ID_PATTERN = r"^INV/\d{8}-\d+$"
+STRICT_DATE_PATTERN = r"^\d{2}/\d{2}/\d{4}$"
+STRICT_PERCENT_PATTERN = r"^\d+(\.\d+)?%$"
+
+# Extraction Patterns (Heuristics)
 INVOICE_ID_PATTERNS = [
     r"(?i)invoice\s*id[:\s]*([A-Z0-9/-]+)",
     r"(?i)invoice\s*#[:\s]*([A-Z0-9/-]+)",
-    r"(?i)inv[i/]?\d+-\d+", # Catch common INV/ pattern
+    r"(?i)inv[i/]?\d{8}-\d+", # Catch common INV/ pattern
 ]
 
 # Dates: Support multiple common formats
