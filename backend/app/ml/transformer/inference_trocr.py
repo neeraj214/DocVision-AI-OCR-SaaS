@@ -41,11 +41,25 @@ class TrOCRInference:
             pixel_values = self.processor(image, return_tensors="pt").pixel_values.to(self.device)
 
             with torch.no_grad():
-                generated_ids = self.model.generate(pixel_values)
+                outputs = self.model.generate(
+                    pixel_values,
+                    return_dict_in_generate=True,
+                    output_scores=True
+                )
+                generated_ids = outputs.sequences
                 generated_text = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+                
+                # Compute confidence score
+                # Taking the average probability of the generated tokens
+                probs = torch.stack(outputs.scores, dim=1).softmax(-1)
+                # Get max probability for each token
+                max_probs, _ = torch.max(probs, dim=-1)
+                # Average probability across sequence
+                confidence = max_probs[0].mean().item()
 
             result = {
                 "text": generated_text,
+                "confidence": confidence,
                 "cer": None,
                 "wer": None
             }
