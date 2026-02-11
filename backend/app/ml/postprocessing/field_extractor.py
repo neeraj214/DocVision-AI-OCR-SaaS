@@ -28,13 +28,24 @@ class FieldExtractor:
             return None
         # Remove currency symbols and whitespace
         clean = re.sub(r"[^\d.,-]", "", text)
-        # Handle comma as decimal separator (European format)
+        
+        # Handle comma as thousand separator or decimal separator
         if "," in clean and "." in clean:
-            # Assume 1.234,56 format
-            clean = clean.replace(".", "").replace(",", ".")
+            # Check which one comes last
+            if clean.rfind(",") > clean.rfind("."):
+                # 1.234,56 format (European)
+                clean = clean.replace(".", "").replace(",", ".")
+            else:
+                # 1,234.56 format (US/UK)
+                clean = clean.replace(",", "")
         elif "," in clean:
-            # Assume 1234,56 format
-            clean = clean.replace(",", ".")
+            # Might be 1234,56 or 1,234
+            # Heuristic: if comma is followed by 2 digits, it's likely a decimal
+            if re.search(r",\d{2}$", clean):
+                clean = clean.replace(",", ".")
+            else:
+                clean = clean.replace(",", "")
+        
         try:
             return float(clean)
         except ValueError:
@@ -61,6 +72,11 @@ class FieldExtractor:
             if "INVI" in raw_id:
                 invoice_id = raw_id.replace("INVI", "INV/")
                 self._log_correction(raw_id, invoice_id, "Corrected INVI to INV/")
+            
+            # Heuristic: Detect missing "/" between INV and numeric block
+            elif re.match(r"(?i)INV\d+", invoice_id):
+                invoice_id = re.sub(r"(?i)INV(\d+)", r"INV/\1", invoice_id)
+                self._log_correction(raw_id, invoice_id, "Restored missing '/' in Invoice ID")
 
         # 2. Date
         invoice_date = self._extract_first(DATE_PATTERNS, text)
@@ -71,6 +87,11 @@ class FieldExtractor:
         if raw_tax_percent:
             try:
                 tax_percentage = float(raw_tax_percent)
+                # Heuristic: If tax lacks %, restore it in the log
+                # We check the original match in the text
+                match = re.search(r"tax\s*[:\s]*" + re.escape(raw_tax_percent), text, re.IGNORECASE)
+                if match and "%" not in match.group(0):
+                    self._log_correction(match.group(0), match.group(0) + "%", "Restored missing '%' in tax field")
             except ValueError:
                 pass
 
