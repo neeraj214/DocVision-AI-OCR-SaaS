@@ -86,6 +86,45 @@
 - Export: reportlab (searchable PDF)
 - Storage: Disk outputs; optional SQLite expansion
 
+## 🧠 Phase 3C: Structured Field Validation & Post-OCR Correction
+
+The system now includes a robust post-processing layer to extract structured fields and correct common OCR errors using regex heuristics and mathematical validation.
+
+### Key Capabilities:
+- **Field Extraction**: Automatically extracts Invoice ID, Date, Tax %, Subtotal, and Total from raw OCR text.
+- **Heuristic Correction**: 
+  - Fixes common character misreads (e.g., `INVI` → `INV/`).
+  - Normalizes case formatting (e.g., `X1.0` → `x1.0`).
+- **Mathematical Validation**: 
+  - Verifies `Subtotal + Tax - Discount == Total`.
+  - **Auto-Inference**: If the tax amount is missing but the tax percentage is present, the system calculates the expected tax to validate the total.
+- **Validation Status**: Every result is flagged as `valid`, `corrected` (if heuristics fixed the data), or `invalid` (if math consistency fails).
+
+### Example Correction:
+**Before (Raw OCR):**
+```text
+Invoice ID: INVI2023-001
+Subtotal: 100.00
+Tax (10.0%): 10.00
+Total: 110.00
+```
+
+**After (Structured Output):**
+```json
+{
+  "invoice_id": "INV/2023-001",
+  "validation_status": "corrected",
+  "corrections": [
+    {"field": "invoice_id", "original": "INVI2023-001", "corrected": "INV/2023-001", "reason": "Corrected INVI to INV/"}
+  ],
+  "structured_fields": {
+    "subtotal": 100.0,
+    "tax_amount": 10.0,
+    "total": 110.0
+  }
+}
+```
+
 ## 🧠 Phase 2A: Document Classification
 
 The system now includes a CNN-based document classifier (ResNet18) to categorize documents into 4 types:
