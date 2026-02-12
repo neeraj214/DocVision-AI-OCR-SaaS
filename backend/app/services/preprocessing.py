@@ -20,26 +20,38 @@ def enhance_contrast(img: np.ndarray) -> np.ndarray:
     return clahe.apply(gray)
 
 def adaptive_threshold(img: np.ndarray) -> np.ndarray:
-    """Applies adaptive Gaussian thresholding."""
+    """Applies adaptive Gaussian thresholding with noise reduction."""
     gray = to_grayscale(img)
+    # Apply a slight blur before thresholding to reduce salt-and-pepper noise
+    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
     return cv2.adaptiveThreshold(
-        gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+        blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
     )
 
 def deskew(img: np.ndarray) -> np.ndarray:
-    """Corrects document rotation using minAreaRect."""
+    """Corrects document rotation using minAreaRect with improved stability."""
     gray = to_grayscale(img)
-    gray = cv2.bitwise_not(gray)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    # Invert image for contour detection
+    inverted = cv2.bitwise_not(gray)
+    thresh = cv2.threshold(inverted, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
     
+    # Use only the non-zero coordinates
     coords = np.column_stack(np.where(thresh > 0))
+    if len(coords) < 10:
+        return img
+        
     angle = cv2.minAreaRect(coords)[-1]
     
+    # Adjust angle for minAreaRect behavior
     if angle < -45:
         angle = -(90 + angle)
     else:
         angle = -angle
         
+    # Limit extreme rotations that might be false positives
+    if abs(angle) > 15:
+        return img
+
     (h, w) = img.shape[:2]
     center = (w // 2, h // 2)
     M = cv2.getRotationMatrix2D(center, angle, 1.0)
