@@ -20,10 +20,19 @@ def _read_image(path: str) -> np.ndarray:
 
 
 def _easyocr_text(img: np.ndarray, lang: str):
-    reader = easyocr.Reader([lang], gpu=False)
-    results = reader.readtext(img)
+    # Set gpu=True if available, otherwise False
+    import torch
+    use_gpu = torch.cuda.is_available()
+    reader = easyocr.Reader([lang], gpu=use_gpu)
+    
+    # Use paragraph=True to handle multi-line text blocks better
+    results = reader.readtext(img, paragraph=True, decoder='beamsearch')
+    
     texts = [r[1] for r in results]
     confs = [float(r[2]) for r in results if len(r) > 2]
+    
+    # If paragraph=True is used, the results are already grouped.
+    # If we still see fragmentation, we might need custom grouping logic here.
     text = "\n".join(texts)
     conf = float(np.mean(confs)) if confs else 0.0
     return text, conf
