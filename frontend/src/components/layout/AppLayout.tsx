@@ -7,8 +7,8 @@ type Props = {
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-primary-base text-text-neutral font-sans selection:bg-ai-highlight1 selection:text-primary-base">
-      <header className="border-b border-white/10 backdrop-blur-md bg-primary-base/80 sticky top-0 z-50">
+    <div className="min-h-screen flex flex-col bg-[#0B0F19] text-text-neutral font-sans selection:bg-ai-highlight1 selection:text-primary-base">
+      <header className="border-b border-white/10 backdrop-blur-md bg-[#0B0F19]/80 sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <div className="flex items-center gap-2">
@@ -47,7 +47,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         {children}
       </main>
 
-      <footer className="border-t border-white/10 bg-primary-base mt-auto">
+      <footer className="border-t border-white/10 bg-[#0B0F19] mt-auto">
         <div className="mx-auto max-w-7xl px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-text-secondary">
           <p>© {new Date().getFullYear()} DocVision AI. All rights reserved.</p>
           <div className="flex gap-6">
