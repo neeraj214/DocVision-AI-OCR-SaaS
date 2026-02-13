@@ -3,40 +3,52 @@ import { Button } from "../ui/Button";
 
 type Props = {
   children: React.ReactNode;
+  onNavigate?: (page: 'home' | 'upload') => void;
+  currentPage?: 'home' | 'upload';
 };
 
-const AppLayout: React.FC<Props> = ({ children }) => {
+const AppLayout: React.FC<Props> = ({ children, onNavigate, currentPage }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0F19] text-text-neutral font-sans selection:bg-ai-highlight1 selection:text-primary-base">
-      <header className="border-b border-white/10 backdrop-blur-md bg-[#0B0F19]/80 sticky top-0 z-50">
-        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-action-primary flex items-center justify-center shadow-lg shadow-action-primary/20">
-                <span className="text-white font-bold text-lg italic">D</span>
+      <header className="border-b border-white/10 backdrop-blur-md bg-[#0B0F19]/80 sticky top-0 z-50 h-24 flex items-center">
+        <div className="mx-auto max-w-7xl w-full px-4 flex items-center justify-between">
+          <div className="flex items-center gap-16">
+            <div 
+              className="flex items-center gap-2.5 cursor-pointer group"
+              onClick={() => onNavigate?.('home')}
+            >
+              <div className="w-9 h-9 rounded-xl bg-action-primary flex items-center justify-center shadow-lg shadow-action-primary/30 group-hover:scale-110 transition-transform">
+                <span className="text-white font-bold text-xl italic">D</span>
               </div>
-              <h1 className="text-xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl font-bold tracking-tight text-white">
                 DocVision <span className="text-text-secondary font-normal">AI</span>
               </h1>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#home" className="text-sm font-semibold text-white relative group">
+            {/* Navigation Links - Centered-right organization */}
+            <nav className="hidden md:flex items-center gap-10">
+              <button 
+                onClick={() => onNavigate?.('home')}
+                className={`text-sm font-semibold transition-colors ${currentPage === 'home' ? 'text-white' : 'text-text-secondary hover:text-white'}`}
+              >
                 Home
-                <span className="absolute -bottom-[21px] left-0 w-full h-0.5 bg-white scale-x-100 transition-transform" />
-              </a>
-              <a href="#upload" className="text-sm font-semibold text-text-secondary hover:text-white transition-colors">Upload</a>
+              </button>
+              <button 
+                onClick={() => onNavigate?.('upload')}
+                className={`text-sm font-semibold transition-colors ${currentPage === 'upload' ? 'text-white' : 'text-text-secondary hover:text-white'}`}
+              >
+                Upload
+              </button>
               <a href="#features" className="text-sm font-semibold text-text-secondary hover:text-white transition-colors">Features</a>
               <a href="#about" className="text-sm font-semibold text-text-secondary hover:text-white transition-colors">About</a>
             </nav>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-10">
             <button className="hidden sm:block text-sm font-semibold text-text-secondary hover:text-white transition-colors">
               Login
             </button>
-            <Button size="sm" className="bg-action-primary hover:bg-action-hover text-white rounded-lg px-6 py-2 text-sm font-bold shadow-lg shadow-action-primary/30 transition-all hover:shadow-action-primary/50 ring-1 ring-white/10">
+            <Button size="lg" className="bg-action-primary hover:bg-action-hover text-white rounded-xl px-8 py-3 text-sm font-bold shadow-[0_0_20px_rgba(99,102,241,0.4)] transition-all hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] ring-1 ring-white/20">
               Sign Up
             </Button>
           </div>
