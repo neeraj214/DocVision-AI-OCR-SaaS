@@ -55,129 +55,123 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
-      <div className="space-y-24 py-12 relative z-10 animate-fade-in">
+      <div className="relative z-10 animate-fade-in">
         {/* Hero Section */}
-        <section className="text-center space-y-10 py-20 relative max-w-5xl mx-auto px-4">
-          <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/5 backdrop-blur-md border border-white/10 p-[1px] mb-8 group hover:scale-105 transition-all duration-300 shadow-xl shadow-black/20">
-            <div className="bg-primary-base/40 rounded-full px-6 py-2 flex items-center gap-3">
-              <Scan className="w-5 h-5 text-action-primary animate-pulse" />
-              <span className="text-sm font-bold text-text-neutral/80 tracking-wider uppercase">Next-Gen OCR Engine</span>
+        <section className="pt-20 pb-32 relative max-w-7xl mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            {/* Left Column: Content */}
+            <div className="flex-1 text-left space-y-10">
+              <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/5 backdrop-blur-md border border-white/10 p-[1px] group hover:scale-105 transition-all duration-300 shadow-xl shadow-black/20">
+                <div className="bg-primary-base/40 rounded-full px-6 py-2 flex items-center gap-3">
+                  <Scan className="w-5 h-5 text-action-primary animate-pulse" />
+                  <span className="text-sm font-bold text-text-neutral/80 tracking-wider uppercase">Next-Gen OCR Engine</span>
+                </div>
+              </div>
+              
+              <h1 
+                className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.1] transition-transform duration-300 ease-out"
+                style={{ transform: `translate(${mousePos.x * -0.2}px, ${mousePos.y * -0.2}px)` }}
+              >
+                <span className="font-bold text-text-neutral">Unlock the Power of</span> <br />
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-action-primary via-ai-highlight1 to-action-primary bg-[length:200%_auto] animate-gradient">
+                  Your Documents
+                </span>
+              </h1>
+              
+              <p className="max-w-[50ch] text-xl text-text-secondary leading-relaxed font-normal opacity-80">
+                DocVision AI uses enterprise-grade transformers to extract structured data 
+                from invoices, forms, and handwritten notes with human-level accuracy.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-start items-center gap-6 pt-4">
+                <Button size="lg" onClick={() => onNavigate("upload")} className="text-lg px-8 py-6 h-auto rounded-xl shadow-2xl shadow-action-primary/30 hover:shadow-action-primary/50 transition-all duration-500 group relative overflow-hidden bg-action-primary">
+                  <span className="relative z-10 flex items-center font-bold">
+                    Start Free Extraction
+                    <Zap className="ml-2 w-5 h-5 group-hover:fill-current group-hover:scale-125 transition-transform duration-300" />
+                  </span>
+                </Button>
+                <Button variant="secondary" size="lg" className="text-lg px-8 py-6 h-auto rounded-xl border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 font-bold text-text-neutral">
+                  Enterprise Demo
+                </Button>
+              </div>
             </div>
-          </div>
-          
-          <h1 
-            className="text-6xl md:text-8xl tracking-tight leading-[1.15] transition-transform duration-300 ease-out"
-            style={{ transform: `translate(${mousePos.x * -0.2}px, ${mousePos.y * -0.2}px)` }}
-          >
-            <span className="font-light text-text-neutral/90">Unlock the Power of</span> <br />
-            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-action-primary via-ai-highlight1 to-action-primary bg-[length:200%_auto] animate-gradient">
-              Your Documents
-            </span>
-          </h1>
-          
-          <p className="max-w-[65ch] mx-auto text-xl md:text-2xl text-text-secondary leading-relaxed font-light">
-            DocVision AI uses enterprise-grade transformers to extract structured data 
-            from invoices, forms, and handwritten notes with human-level accuracy.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-10">
-            <Button size="lg" onClick={() => onNavigate("upload")} className="text-xl px-10 py-6 h-auto rounded-2xl shadow-2xl shadow-action-primary/30 hover:shadow-action-primary/50 transition-all duration-500 group relative overflow-hidden">
-              <span className="relative z-10 flex items-center">
-                Start Free Extraction
-                <Zap className="ml-2 w-5 h-5 group-hover:fill-current group-hover:scale-125 transition-transform duration-300" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-action-primary via-ai-highlight1 to-action-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
-            </Button>
-            <Button variant="secondary" size="lg" className="text-xl px-10 py-6 h-auto rounded-2xl border-white/10 hover:bg-white/5 backdrop-blur-sm transition-all duration-300">
-              Enterprise Demo
-            </Button>
-          </div>
 
-          {/* Product Preview / Before-After Section */}
-          <div className="mt-20 relative max-w-5xl mx-auto px-4">
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl animate-slide-up">
-              <div className="flex flex-col lg:flex-row items-stretch">
-                {/* Before: Messy Invoice */}
-                <div className="flex-1 p-8 border-b lg:border-b-0 lg:border-r border-white/10 bg-white/[0.02]">
-                  <div className="flex items-center gap-2 mb-6 text-text-secondary/60 text-sm font-medium uppercase tracking-wider">
-                    <FileText className="w-4 h-4" />
-                    Input: Raw Document
-                  </div>
-                  <div className="relative aspect-[4/5] bg-white/5 rounded-xl border border-white/5 overflow-hidden group">
-                    <div className="absolute inset-0 p-6 space-y-4 opacity-40 group-hover:opacity-60 transition-opacity duration-500">
-                      <div className="h-4 w-1/3 bg-white/20 rounded" />
-                      <div className="space-y-2">
-                        <div className="h-2 w-full bg-white/10 rounded" />
-                        <div className="h-2 w-5/6 bg-white/10 rounded" />
+            {/* Right Column: Product Preview */}
+            <div className="flex-1 w-full max-w-2xl">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl animate-slide-up group">
+                <div className="flex flex-col items-stretch">
+                  {/* Before/After Visualization */}
+                  <div className="p-1 bg-gradient-to-br from-white/10 to-transparent">
+                    <div className="relative aspect-[16/10] bg-black/40 rounded-xl overflow-hidden">
+                      {/* Image representation matching the screenshot */}
+                      <div className="absolute inset-0 p-8 flex gap-4">
+                        {/* Left side: Doc representation */}
+                        <div className="flex-1 bg-white/5 rounded-lg border border-white/10 p-4 space-y-3 opacity-60">
+                          <div className="h-2 w-1/2 bg-white/20 rounded" />
+                          <div className="h-12 w-full border border-white/10 rounded" />
+                          <div className="h-12 w-full border border-white/10 rounded" />
+                          <div className="h-12 w-full border border-white/10 rounded" />
+                        </div>
+                        {/* Right side: Code representation */}
+                        <div className="flex-1 bg-black/60 rounded-lg border border-white/10 p-4 font-mono text-[10px] text-action-primary/80 overflow-hidden">
+                          <div className="text-white/40">{"{"}</div>
+                          <div className="pl-2">"id": "INV-001",</div>
+                          <div className="pl-2">"date": "2024-02-12",</div>
+                          <div className="pl-2">"total": 1240.50,</div>
+                          <div className="pl-2">"items": [...]</div>
+                          <div className="text-white/40">{"}"}</div>
+                        </div>
+                        {/* Connecting arrows animation */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-action-primary/50 to-transparent animate-pulse" />
+                        </div>
                       </div>
-                      <div className="pt-8 space-y-3">
-                        <div className="h-8 w-full border border-white/10 rounded" />
-                        <div className="h-8 w-full border border-white/10 rounded" />
-                        <div className="h-8 w-full border border-white/10 rounded" />
+                      
+                      {/* Scanning line */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-action-primary/20 to-transparent h-1/2 w-full animate-[scan_4s_ease-in-out_infinite] pointer-events-none" />
+                      
+                      {/* Floating UI Elements */}
+                      <div className="absolute top-4 left-4 flex items-center gap-2 px-2 py-1 rounded bg-black/60 border border-white/10">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-[10px] font-bold text-white/60">LIVE PROCESSING</span>
                       </div>
                     </div>
-                    {/* Scanning Animation */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-action-primary/20 to-transparent h-1/2 w-full animate-[scan_3s_ease-in-out_infinite] pointer-events-none" />
-                  </div>
-                </div>
-
-                {/* Transformation Arrow */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden lg:block">
-                  <div className="w-12 h-12 rounded-full bg-action-primary flex items-center justify-center shadow-lg shadow-action-primary/50 animate-pulse">
-                    <Zap className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-
-                {/* After: Clean JSON */}
-                <div className="flex-1 p-8 bg-black/40">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2 text-ai-highlight1 text-sm font-medium uppercase tracking-wider">
-                      <Zap className="w-4 h-4" />
-                      Output: Structured Data
-                    </div>
-                    <div className="px-2 py-1 rounded bg-ai-highlight1/10 text-ai-highlight1 text-[10px] font-bold border border-ai-highlight1/20">
-                      JSON
-                    </div>
-                  </div>
-                  <div className="relative aspect-[4/5] font-mono text-sm overflow-hidden">
-                    <div className="text-ai-highlight1/90 space-y-1">
-                      <div className="text-text-secondary/50">{"{"}</div>
-                      <div className="pl-4"><span className="text-ai-highlight2">"invoice_id"</span>: <span className="text-action-primary">"INV-2024-001"</span>,</div>
-                      <div className="pl-4"><span className="text-ai-highlight2">"date"</span>: <span className="text-action-primary">"2024-02-12"</span>,</div>
-                      <div className="pl-4"><span className="text-ai-highlight2">"vendor"</span>: <span className="text-action-primary">"TechCorp Systems"</span>,</div>
-                      <div className="pl-4"><span className="text-ai-highlight2">"items"</span>: [</div>
-                      <div className="pl-8">{"{"}</div>
-                      <div className="pl-12"><span className="text-ai-highlight2">"desc"</span>: <span className="text-action-primary">"Cloud API Usage"</span>,</div>
-                      <div className="pl-12"><span className="text-ai-highlight2">"total"</span>: <span className="text-action-primary">1240.50</span></div>
-                      <div className="pl-8">{"}"}</div>
-                      <div className="pl-4">],</div>
-                      <div className="pl-4"><span className="text-ai-highlight2">"confidence"</span>: <span className="text-green-400">0.998</span></div>
-                      <div className="text-text-secondary/50">{"}"}</div>
-                    </div>
-                    {/* Floating Glow */}
-                    <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-action-primary/20 blur-[60px] rounded-full" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Logo Cloud Section */}
-          <div className="mt-32 max-w-7xl mx-auto px-4">
-            <p className="text-center text-sm font-semibold text-text-secondary/50 uppercase tracking-[0.2em] mb-12">
-              Trusted by industry leaders worldwide
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-              <LogoItem name="GlobateCorp" />
-              <LogoItem name="DataPrime" />
-              <LogoItem name="NexusTech" />
-              <LogoItem name="FutureSolutions" />
+        {/* Logo Cloud Section - Redesigned to match image */}
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+              <div className="text-left">
+                <h3 className="text-2xl font-bold text-primary-base mb-4">Trusted by</h3>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 bg-primary-base text-white px-4 py-2 rounded-lg text-sm font-bold">
+                    <Shield className="w-4 h-4 text-ai-highlight2" />
+                    SOC2 Compliant
+                  </div>
+                  <div className="text-primary-base/40 font-bold text-sm">
+                    AES-256 Encrypted
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+                <LogoItemDark name="InnovateCorp" />
+                <LogoItemDark name="GlobalFlow" />
+                <LogoItemDark name="DataPrime" />
+                <LogoItemDark name="NexusTech" />
+              </div>
             </div>
           </div>
         </section>
 
         {/* Stats / Proof Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto py-12 border-y border-white/5 relative group">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto py-24 border-y border-white/5 relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
           <StatItem label="Accuracy" value="99.9%" />
           <StatItem label="Processing" value="< 2s" />
@@ -219,6 +213,15 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
+const LogoItemDark: React.FC<{ name: string }> = ({ name }) => (
+  <div className="flex items-center gap-2 group/logo">
+    <div className="w-8 h-8 rounded bg-primary-base/10 flex items-center justify-center font-black text-xs text-primary-base group-hover/logo:bg-action-primary group-hover/logo:text-white transition-colors">
+      {name[0]}
+    </div>
+    <span className="font-bold tracking-tight text-lg text-primary-base group-hover/logo:text-action-primary transition-colors">{name}</span>
+  </div>
+);
 
 const LogoItem: React.FC<{ name: string }> = ({ name }) => (
   <div className="flex items-center gap-2 group/logo">
