@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
-import { Scan, FileText, Zap, Shield } from "lucide-react";
+import { Scan, FileText, Zap, Shield, CheckCircle, PenLine, ShieldCheck } from "lucide-react";
 
 interface HomePageProps {
   onNavigate: (page: "upload") => void;
@@ -129,17 +129,17 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         </div>
                         
                         {/* Right side: JSON Code */}
-                        <div className="flex-1 bg-black/40 rounded-lg border border-white/10 p-4 font-mono text-[10px] text-action-primary/90 overflow-hidden relative">
-                          <div className="text-white/30">{"{"}</div>
-                          <div className="pl-2"><span className="text-ai-highlight2">"id"</span>: "INV-001",</div>
-                          <div className="pl-2"><span className="text-ai-highlight2">"date"</span>: "2024-02-12",</div>
-                          <div className="pl-2"><span className="text-ai-highlight2">"total"</span>: 1240.50,</div>
-                          <div className="pl-2"><span className="text-ai-highlight2">"status"</span>: "parsed",</div>
-                          <div className="pl-2"><span className="text-ai-highlight2">"items"</span>: [...]</div>
-                          <div className="text-white/30">{"}"}</div>
+                        <div className="flex-1 bg-black/60 rounded-lg border border-action-primary/30 p-4 font-mono text-[11px] text-action-primary overflow-hidden relative shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                          <div className="text-white/40 mb-1">{"{"}</div>
+                          <div className="pl-3"><span className="text-ai-highlight1">"type"</span>: "Invoice",</div>
+                          <div className="pl-3"><span className="text-ai-highlight1">"id"</span>: <span className="text-ai-highlight2">"INV-001"</span>,</div>
+                          <div className="pl-3"><span className="text-ai-highlight1">"date"</span>: <span className="text-ai-highlight2">"2024-02"</span>,</div>
+                          <div className="pl-3"><span className="text-ai-highlight1">"total"</span>: <span className="text-ai-highlight2">1240.50</span>,</div>
+                          <div className="pl-3"><span className="text-ai-highlight1">"status"</span>: <span className="text-ai-highlight2">"parsed"</span></div>
+                          <div className="text-white/40 mt-1">{"}"}</div>
                           
                           {/* Inner glow for JSON */}
-                          <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)] pointer-events-none" />
+                          <div className="absolute inset-0 shadow-[inset_0_0_15px_rgba(99,102,241,0.1)] pointer-events-none" />
                         </div>
                       </div>
 
@@ -153,114 +153,83 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </section>
 
-        {/* Logo Cloud Section - Redesigned to match image */}
-        <section className="bg-white py-16">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-              <div className="text-left">
-                <h3 className="text-2xl font-bold text-primary-base mb-4">Trusted by</h3>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 bg-primary-base text-white px-4 py-2 rounded-lg text-sm font-bold">
-                    <Shield className="w-4 h-4 text-ai-highlight2" />
-                    SOC2 Compliant
-                  </div>
-                  <div className="text-primary-base/40 font-bold text-sm">
-                    AES-256 Encrypted
-                  </div>
-                </div>
-              </div>
+        {/* Features & About Section */}
+        <section id="features" className="py-32 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 relative z-10">
+            <div className="flex flex-col items-center text-center mb-20">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+                Enterprise-Grade <span className="text-action-primary">Capabilities</span>
+              </h2>
+              <p className="max-w-2xl text-text-secondary text-lg opacity-70">
+                DocVision AI combines state-of-the-art vision transformers with enterprise security 
+                to transform how your organization handles document data.
+              </p>
+            </div>
 
-              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
-                <LogoItemDark name="InnovateCorp" />
-                <LogoItemDark name="GlobalFlow" />
-                <LogoItemDark name="DataPrime" />
-                <LogoItemDark name="NexusTech" />
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <FeatureCard 
+                icon={<CheckCircle className="w-8 h-8 text-ai-highlight2" />}
+                title="Automatic Data Extraction"
+                description="Zero-shot extraction of structured fields from any document type without pre-defined templates or manual rules."
+              />
+              <FeatureCard 
+                icon={<PenLine className="w-8 h-8 text-action-primary" />}
+                title="Handwritten Text Recognition"
+                description="Human-level accuracy on cursive, messy, or faded handwriting using our proprietary deep learning models."
+              />
+              <FeatureCard 
+                icon={<ShieldCheck className="w-8 h-8 text-ai-highlight1" />}
+                title="Enterprise-Grade Security"
+                description="End-to-end encryption, SOC2 compliance, and automated PII masking to keep your sensitive data protected."
+              />
             </div>
           </div>
+
+          {/* Background depth for features */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-action-primary/5 blur-[120px] rounded-full pointer-events-none" />
         </section>
 
-        {/* Stats / Proof Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto py-24 border-y border-white/5 relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
-          <StatItem label="Accuracy" value="99.9%" />
-          <StatItem label="Processing" value="< 2s" />
-          <StatItem label="Formats" value="50+" />
-          <StatItem label="Secure" value="SOC2" />
-        </div>
-
-        {/* Security Trust Badges */}
-        <div className="flex justify-center gap-8 py-8 opacity-60">
-          <div className="flex items-center gap-2 text-xs font-bold text-text-secondary border border-white/10 rounded-lg px-4 py-2 backdrop-blur-sm">
-            <Shield className="w-4 h-4 text-ai-highlight2" />
-            SOC2 COMPLIANT
+        {/* Trust Section / Stats */}
+        <section className="pb-32">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-16 border-y border-white/10 relative group bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+              <StatItem label="Accuracy" value="99.9%" />
+              <StatItem label="Processing" value="< 2s" />
+              <StatItem label="Formats" value="50+" />
+              <StatItem label="Secure" value="SOC2" />
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold text-text-secondary border border-white/10 rounded-lg px-4 py-2 backdrop-blur-sm">
-            <Zap className="w-4 h-4 text-action-primary" />
-            AES-256 ENCRYPTED
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <section className="grid md:grid-cols-3 gap-8 px-4 max-w-7xl mx-auto">
-          <FeatureCard
-            icon={<Zap className="w-8 h-8 text-ai-highlight2" />}
-            title="Transformer OCR"
-            description="Leverage TrOCR and Vision Transformers for unmatched character recognition even in low-quality scans."
-          />
-          <FeatureCard
-            icon={<FileText className="w-8 h-8 text-action-primary" />}
-            title="Intelligent Routing"
-            description="Our AI classifier automatically routes documents to the specialized engine for the best possible results."
-          />
-          <FeatureCard
-            icon={<Shield className="w-8 h-8 text-ai-highlight1" />}
-            title="Data Governance"
-            description="Enterprise-grade encryption and PII masking ensure your sensitive financial data remains private."
-          />
         </section>
       </div>
     </div>
   );
 };
 
-const LogoItemDark: React.FC<{ name: string }> = ({ name }) => (
-  <div className="flex items-center gap-2 group/logo">
-    <div className="w-8 h-8 rounded bg-primary-base/10 flex items-center justify-center font-black text-xs text-primary-base group-hover/logo:bg-action-primary group-hover/logo:text-white transition-colors">
-      {name[0]}
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
+  <div className="group relative">
+    {/* Subtle glow behind card */}
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-action-primary/20 to-ai-highlight1/20 rounded-[2rem] blur opacity-0 group-hover:opacity-100 transition duration-500" />
+    
+    <div className="relative h-full bg-[#161B26] border border-white/5 rounded-[2rem] p-10 hover:border-action-primary/50 transition-all duration-500 flex flex-col items-start text-left shadow-2xl shadow-black/50">
+      <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 ring-1 ring-white/10">
+        {icon}
+      </div>
+      <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-action-primary transition-colors">
+        {title}
+      </h3>
+      <p className="text-text-secondary leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity">
+        {description}
+      </p>
     </div>
-    <span className="font-bold tracking-tight text-lg text-primary-base group-hover/logo:text-action-primary transition-colors">{name}</span>
-  </div>
-);
-
-const LogoItem: React.FC<{ name: string }> = ({ name }) => (
-  <div className="flex items-center gap-2 group/logo">
-    <div className="w-8 h-8 rounded bg-white/10 flex items-center justify-center font-black text-xs group-hover/logo:bg-action-primary/20 group-hover/logo:text-action-primary transition-colors">
-      {name[0]}
-    </div>
-    <span className="font-bold tracking-tight text-lg group-hover/logo:text-white transition-colors">{name}</span>
   </div>
 );
 
 const StatItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="text-center">
-    <div className="text-2xl font-bold text-text-neutral">{value}</div>
-    <div className="text-sm text-text-secondary uppercase tracking-widest">{label}</div>
+  <div className="text-center relative z-10">
+    <div className="text-3xl font-bold text-white mb-1">{value}</div>
+    <div className="text-xs text-text-secondary uppercase tracking-widest font-bold opacity-50">{label}</div>
   </div>
-);
-
-const FeatureCard: React.FC<{
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}> = ({ icon, title, description }) => (
-  <Card className="p-8 hover:bg-white/10 transition-colors group border-white/5">
-    <div className="mb-6 p-3 bg-white/5 w-fit rounded-lg group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/10">
-      {icon}
-    </div>
-    <h3 className="text-xl font-bold text-text-neutral mb-3">{title}</h3>
-    <p className="text-text-secondary leading-relaxed">{description}</p>
-  </Card>
 );
 
 export default HomePage;
