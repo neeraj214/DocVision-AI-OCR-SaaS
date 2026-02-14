@@ -5,6 +5,7 @@ import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
 import { ResultsDisplay } from "../../components/ResultsDisplay";
 import { cn } from "../../components/ui/Button";
+import { getToken, isTokenExpired } from "../../services/api";
 
 export const UploadPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -27,6 +28,7 @@ export const UploadPage: React.FC = () => {
     },
     maxFiles: 1,
     multiple: false,
+    maxSize: 10 * 1024 * 1024,
   });
 
   const handleUpload = async () => {
@@ -39,9 +41,16 @@ export const UploadPage: React.FC = () => {
     formData.append("file", file);
 
     try {
+      const token = getToken();
+      if (!token || isTokenExpired(token)) {
+        throw new Error("Please login to continue");
+      }
       const response = await fetch("http://localhost:8000/api/ocr/routed", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
