@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../ui/Button";
+import { logout } from "../../services/api";
 
 type Props = {
   children: React.ReactNode;
@@ -58,6 +59,12 @@ const AppLayout: React.FC<Props> = ({ children, onNavigate, currentPage }) => {
             >
               Sign Up
             </Button>
+            <button 
+              onClick={() => { logout().finally(() => onNavigate?.('home')); }}
+              className="text-sm font-semibold text-text-secondary hover:text-white transition-colors"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </header>
