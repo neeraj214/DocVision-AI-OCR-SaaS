@@ -9,6 +9,7 @@ Pillow
 langdetect
 reportlab
 pydantic
+email-validator
 SQLAlchemy
 aiofiles
 requests
