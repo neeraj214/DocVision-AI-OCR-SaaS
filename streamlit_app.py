@@ -77,7 +77,7 @@ def main() -> None:
         """
         <style>
         body {
-            background-color: #0B0F19;
+            background: #0B0F19;
             color: #F8FAFC;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
         }
@@ -88,17 +88,17 @@ def main() -> None:
         }
         .auth-panel {
             border-radius: 18px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            box-shadow: 0 24px 40px rgba(15, 23, 42, 0.9);
             padding: 28px 30px;
             backdrop-filter: blur(24px);
         }
         .auth-panel-gradient {
-            background: radial-gradient(circle at 0% 0%, rgba(216, 180, 254, 0.25), transparent 55%),
-                        radial-gradient(circle at 100% 100%, rgba(134, 239, 172, 0.18), transparent 55%),
+            background: radial-gradient(circle at 0% 0%, rgba(216, 180, 254, 0.3), transparent 55%),
+                        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.22), transparent 55%),
                         linear-gradient(135deg, #6366F1, #8B5CF6);
-            border-color: rgba(99, 102, 241, 0.6);
+            border-color: rgba(129, 140, 248, 0.8);
         }
         .auth-heading {
             font-size: 24px;
@@ -143,11 +143,65 @@ def main() -> None:
             border-radius: 18px;
             background: rgba(15, 23, 42, 0.96);
             border: 1px dashed rgba(148, 163, 184, 0.6);
-            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.9);
+            box-shadow: 0 20px 35px rgba(15, 23, 42, 0.85);
             padding: 20px 22px;
         }
         [data-testid="stVerticalBlock"] {
             gap: 0.6rem;
+        }
+        .pill-strip {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+        .pill {
+            min-width: 210px;
+            padding: 0.65rem 1.4rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.98);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.85);
+            animation: float 7s ease-in-out infinite;
+        }
+        .pill:nth-child(2) {
+            background: linear-gradient(120deg, #6366F1, #8B5CF6, #EC4899);
+            border-color: rgba(248, 250, 252, 0.2);
+            box-shadow: 0 18px 45px rgba(129, 140, 248, 0.75);
+            animation-delay: 1.2s;
+        }
+        .pill:nth-child(3) {
+            animation-delay: 2.1s;
+        }
+        .pill-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+        .pill-text-main {
+            font-size: 14px;
+            font-weight: 600;
+            color: #F9FAFB;
+        }
+        .pill-text-sub {
+            font-size: 11px;
+            color: #CBD5F5;
+            opacity: 0.85;
+        }
+        .pill-text-sub-muted {
+            color: #9CA3AF;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
         }
         </style>
         """,
@@ -162,6 +216,35 @@ def main() -> None:
         )
         st.markdown(
             "<p style='text-align:center; color:#94A3B8; margin-bottom:1.5rem;'>Securely sign in to manage and extract intelligence from your documents.</p>",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
+            <div class="pill-strip">
+              <div class="pill">
+                <div class="pill-icon">🔐</div>
+                <div>
+                  <div class="pill-text-main">Welcome back</div>
+                  <div class="pill-text-sub">Sign in to continue</div>
+                </div>
+              </div>
+              <div class="pill">
+                <div class="pill-icon">✨</div>
+                <div>
+                  <div class="pill-text-main">New to DocVision?</div>
+                  <div class="pill-text-sub">Create your free account</div>
+                </div>
+              </div>
+              <div class="pill">
+                <div class="pill-icon">📄</div>
+                <div>
+                  <div class="pill-text-main">Upload and OCR</div>
+                  <div class="pill-text-sub pill-text-sub-muted">Login required to upload</div>
+                </div>
+              </div>
+            </div>
+            """,
             unsafe_allow_html=True,
         )
 
